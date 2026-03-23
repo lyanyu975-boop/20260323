@@ -3,7 +3,24 @@ let bubbles = []; // 儲存氣泡的陣列
 let fishes = [];  // 儲存小魚的陣列
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  let cnv = createCanvas(windowWidth, windowHeight);
+  // 設定 Canvas 樣式：置頂但允許滑鼠點擊穿透
+  cnv.style('position', 'fixed');
+  cnv.style('top', '0');
+  cnv.style('left', '0');
+  cnv.style('z-index', '1'); 
+  cnv.style('pointer-events', 'none'); // 關鍵：讓操作能穿透 Canvas 到達 iframe
+
+  // 建立 iframe
+  let iframe = createElement('iframe');
+  iframe.attribute('src', 'https://www.et.tku.edu.tw');
+  iframe.style('position', 'fixed');
+  iframe.style('top', '0');
+  iframe.style('left', '0');
+  iframe.style('width', '100%');
+  iframe.style('height', '100%');
+  iframe.style('border', 'none');
+  iframe.style('z-index', '-1'); // 放在 Canvas 後面
 
   let colors = ['#264653', '#2a9d8f', '#588157', '#3a5a40', '#a3b18a']; // 飽和度低的綠色系
 
@@ -48,12 +65,9 @@ function setup() {
 }
 
 function draw() {
-  // 環境光效果：漸層背景 (上方較亮，下方較暗)
-  let gradient = drawingContext.createLinearGradient(0, 0, 0, height);
-  gradient.addColorStop(0, '#184e77'); // 海面光線 (淺深藍)
-  gradient.addColorStop(1, '#001d3d'); // 深海 (深藍)
-  drawingContext.fillStyle = gradient;
-  drawingContext.fillRect(0, 0, width, height);
+  clear(); // 清除畫布，確保透明背景不重疊
+  // 背景顏色透明度為 0.2 (保留深海藍色調)
+  background('rgba(0, 29, 61, 0.2)');
 
   // 繪製氣泡
   for (let b of bubbles) {
